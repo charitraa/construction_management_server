@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from user.permission import HasPageAccess
 from core.permission import LoginRequiredPermission
 from .serializers import (
     EmployeeSerializer,
@@ -15,7 +14,7 @@ import io
 
 
 class EmployeeListView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         role = request.query_params.get('role')
@@ -30,7 +29,7 @@ class EmployeeListView(APIView):
 
 
 class EmployeeCreateView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def post(self, request, *args, **kwargs):
         serializer = EmployeeCreateSerializer(data=request.data)
@@ -43,7 +42,7 @@ class EmployeeCreateView(APIView):
 
 
 class EmployeeRetrieveView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, employee_id, *args, **kwargs):
         employee = EmployeeService.get_employee_by_id(employee_id)
@@ -56,7 +55,7 @@ class EmployeeRetrieveView(APIView):
 
 
 class EmployeeUpdateView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def put(self, request, employee_id, *args, **kwargs):
         employee = EmployeeService.get_employee_by_id(employee_id)
@@ -72,7 +71,7 @@ class EmployeeUpdateView(APIView):
 
 
 class EmployeeDestroyView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def delete(self, request, employee_id, *args, **kwargs):
         employee = EmployeeService.get_employee_by_id(employee_id)
@@ -85,7 +84,7 @@ class EmployeeDestroyView(APIView):
 
 
 class EmployeeStatsView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         stats = EmployeeService.get_employee_stats()
@@ -96,7 +95,7 @@ class EmployeeStatsView(APIView):
 
 
 class EmployeeExportView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         role = request.query_params.get('role')

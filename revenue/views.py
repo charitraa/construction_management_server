@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from user.permission import HasPageAccess
 from core.permission import LoginRequiredPermission
 from .serializers import (
     RevenueSerializer,
@@ -15,7 +14,7 @@ import io
 
 
 class RevenueListView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         revenues = RevenueService.get_all_revenues()
@@ -26,7 +25,7 @@ class RevenueListView(APIView):
 
 
 class RevenueCreateView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def post(self, request, *args, **kwargs):
         serializer = RevenueCreateSerializer(data=request.data)
@@ -39,7 +38,7 @@ class RevenueCreateView(APIView):
 
 
 class RevenueRetrieveView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, revenue_id, *args, **kwargs):
         revenue = RevenueService.get_revenue_by_id(revenue_id)
@@ -52,7 +51,7 @@ class RevenueRetrieveView(APIView):
 
 
 class RevenueUpdateView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def put(self, request, revenue_id, *args, **kwargs):
         revenue = RevenueService.get_revenue_by_id(revenue_id)
@@ -68,7 +67,7 @@ class RevenueUpdateView(APIView):
 
 
 class RevenueDestroyView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def delete(self, request, revenue_id, *args, **kwargs):
         revenue = RevenueService.get_revenue_by_id(revenue_id)
@@ -81,7 +80,7 @@ class RevenueDestroyView(APIView):
 
 
 class RevenueStatsView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         stats = RevenueService.get_revenue_stats()
@@ -92,7 +91,7 @@ class RevenueStatsView(APIView):
 
 
 class RevenueExportView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         status_filter = request.query_params.get('status')

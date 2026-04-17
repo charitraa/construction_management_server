@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from user.permission import HasPageAccess
 from core.permission import LoginRequiredPermission
 from .serializers import (
     ExpenseSerializer,
@@ -15,7 +14,7 @@ import io
 
 
 class ExpenseListView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         expenses = ExpenseService.get_all_expenses()
@@ -26,7 +25,7 @@ class ExpenseListView(APIView):
 
 
 class ExpenseCreateView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def post(self, request, *args, **kwargs):
         serializer = ExpenseCreateSerializer(data=request.data)
@@ -39,7 +38,7 @@ class ExpenseCreateView(APIView):
 
 
 class ExpenseRetrieveView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, expense_id, *args, **kwargs):
         expense = ExpenseService.get_expense_by_id(expense_id)
@@ -52,7 +51,7 @@ class ExpenseRetrieveView(APIView):
 
 
 class ExpenseUpdateView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def put(self, request, expense_id, *args, **kwargs):
         expense = ExpenseService.get_expense_by_id(expense_id)
@@ -68,7 +67,7 @@ class ExpenseUpdateView(APIView):
 
 
 class ExpenseDestroyView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def delete(self, request, expense_id, *args, **kwargs):
         expense = ExpenseService.get_expense_by_id(expense_id)
@@ -81,7 +80,7 @@ class ExpenseDestroyView(APIView):
 
 
 class ExpenseStatsView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         stats = ExpenseService.get_expense_stats()
@@ -92,7 +91,7 @@ class ExpenseStatsView(APIView):
 
 
 class ExpenseExportView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         category = request.query_params.get('category')

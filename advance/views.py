@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from user.permission import HasPageAccess
 from core.permission import LoginRequiredPermission
 from .serializers import (
     AdvanceSerializer,
@@ -12,7 +11,7 @@ from .exceptions import AdvanceNotFoundException
 
 
 class AdvanceListView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         advances = AdvanceService.get_all_advances()
@@ -23,7 +22,7 @@ class AdvanceListView(APIView):
 
 
 class AdvanceCreateView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def post(self, request, *args, **kwargs):
         serializer = AdvanceCreateSerializer(data=request.data)
@@ -36,7 +35,7 @@ class AdvanceCreateView(APIView):
 
 
 class AdvanceRetrieveView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, advance_id, *args, **kwargs):
         advance = AdvanceService.get_advance_by_id(advance_id)
@@ -49,7 +48,7 @@ class AdvanceRetrieveView(APIView):
 
 
 class AdvanceDestroyView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def delete(self, request, advance_id, *args, **kwargs):
         advance = AdvanceService.get_advance_by_id(advance_id)
@@ -62,7 +61,7 @@ class AdvanceDestroyView(APIView):
 
 
 class AdvanceStatsView(APIView):
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         stats = AdvanceService.get_advance_stats()
