@@ -18,8 +18,14 @@ class ProjectListView(APIView):
 
     def get(self, request, *args, **kwargs):
         location = request.query_params.get('location')
-        if location:
+        status_param = request.query_params.get('status')
+
+        if location and status_param:
+            projects = ProjectService.get_projects_by_location(location).filter(status=status_param)
+        elif location:
             projects = ProjectService.get_projects_by_location(location)
+        elif status_param:
+            projects = ProjectService.get_projects_by_status(status_param)
         else:
             projects = ProjectService.get_all_projects()
         return Response({
@@ -99,23 +105,40 @@ class ProjectExportView(APIView):
 
     def get(self, request, *args, **kwargs):
         location = request.query_params.get('location')
-        if location:
+        status_param = request.query_params.get('status')
+
+        if location and status_param:
+            projects = ProjectService.get_projects_by_location(location).filter(status=status_param)
+        elif location:
             projects = ProjectService.get_projects_by_location(location)
+        elif status_param:
+            projects = ProjectService.get_projects_by_status(status_param)
         else:
             projects = ProjectService.get_all_projects()
-        
+
         if not projects.exists():
             return Response({
                 "error": "No projects to export"
             }, status=status.HTTP_400_BAD_REQUEST)
-        
+
         output = io.StringIO()
         writer = csv.writer(output)
-        writer.writerow(['Project ID', 'Project Name', 'Client', 'Location', 'Value'])
-        
+        writer.writerow(['Project ID', 'Project Name', 'Description', 'Client', 'Location', 'Start Date', 'End Date', 'Status', 'Budget', 'Contract Value'])
+
         for proj in projects:
-            writer.writerow([str(proj.id), proj.name, proj.client_name, proj.location, proj.contract_value])
-        
+            writer.writerow([
+                str(proj.id),
+                proj.name,
+                proj.description or '',
+                proj.client_name,
+                proj.location,
+                str(proj.start_date) if proj.start_date else '',
+                str(proj.end_date) if proj.end_date else '',
+                proj.status,
+                str(proj.budget),
+                str(proj.contract_value)
+            ])
+
         output.seek(0)
         return Response({
             "data": output.getvalue(),

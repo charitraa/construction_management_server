@@ -39,3 +39,17 @@ class ProjectRepository:
     def total_contract_value():
         from django.db.models import Sum
         return Project.objects.aggregate(total=Sum('contract_value'))['total'] or 0
+
+    @staticmethod
+    def get_by_status(status):
+        return Project.objects.filter(status=status)
+
+    @staticmethod
+    def get_active_projects_count():
+        return Project.objects.filter(status='ongoing').count()
+
+    @staticmethod
+    def count_by_status():
+        from django.db.models import Count
+        result = Project.objects.values('status').annotate(count=Count('id'))
+        return {item['status']: item['count'] for item in result}
