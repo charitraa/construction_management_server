@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
-from user.permission import HasPageAccess
 from core.permission import LoginRequiredPermission
 from core.throttling import LoginRateThrottle
 from .serializers import  UserSerializer, UserCreateSerializer, UserUpdateSerializer
@@ -51,7 +50,7 @@ class LoginView(TokenObtainPairView):
 
 class UserListView(APIView):
     """ Admin-only view to retrieve all user details. """
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
         data = UserService.get_all_users()
@@ -67,7 +66,7 @@ class UserProfileView(APIView):
 
 class UserRetrieveView(APIView):
     """ Admin-only view to retrieve user details by ID. """
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
 
     def get(self, user_id, *args, **kwargs):
         user = UserService.get_user_by_id(user_id)
@@ -78,7 +77,7 @@ class UserRetrieveView(APIView):
 class UserUpdateView(APIView):
     """Admin-only view to update user details."""
 
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
     def put(self, request, user_id, *args, **kwargs):
         user = UserService.get_user_by_id(user_id)
         if not user:
@@ -92,7 +91,7 @@ class UserUpdateView(APIView):
 class UserCreateView(APIView):
     """Admin-only view to create new users."""
 
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
     def post(self, request, *args, **kwargs):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -103,7 +102,7 @@ class UserCreateView(APIView):
 class UserDestroyView(APIView):
     """Admin-only view to delete a user."""
 
-    permission_classes = [LoginRequiredPermission, HasPageAccess]
+    permission_classes = [LoginRequiredPermission]
     def delete(self, user_id, *args, **kwargs):
         user = UserService.get_user_by_id(user_id)
         if not user:
