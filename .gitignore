@@ -1,0 +1,40 @@
+/school_env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+*.manifest
+*.spec
+
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
+.env
+
+# Django stuff
+*.log
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Django migrations (only keep __init__.py)
+*/migrations/*
+!*/migrations/__init__.py
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+migrations/
