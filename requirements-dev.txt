@@ -1,0 +1,42 @@
+# Production dependencies
+-r requirements.txt
+
+# Development Tools
+black==24.4.2              # Code formatter
+flake8==7.0.0               # Linting tool
+isort==5.13.2               # Import organizer
+bandit==1.7.8               # Security linter
+pylint==3.1.0               # Code quality tool
+
+# Testing
+coverage==7.5.0             # Code coverage tool
+pytest==8.1.1               # Testing framework
+pytest-django==4.8.0         # Django integration for pytest
+pytest-cov==5.0.0           # Coverage plugin for pytest
+factory-boy==3.3.0          # Test data generation
+
+# Documentation
+sphinx==7.3.7               # Documentation generator
+sphinx-rtd-theme==2.0.0      # Read the Docs theme
+
+# Development Server
+django-debug-toolbar==4.3.0   # Django debug toolbar
+django-extensions==3.2.3       # Django extensions
+
+# Git hooks
+pre-commit==3.7.0             # Git hooks manager
+
+# Performance profiling
+django-silk==5.1.0            # Request profiling
+py-spy==0.3.14                # Python profiler
+
+# Database Tools
+pgcli==4.1.0                  # PostgreSQL CLI
+dj-database-url==2.2.0         # Database URL parser
+
+# API Development
+drf-yasg==1.21.7             # Swagger/OpenAPI generator
+drf-spectacular==0.27.2       # Modern OpenAPI schema
+
+# Environment Management
+python-dotenv==1.0.1          # Environment variable management

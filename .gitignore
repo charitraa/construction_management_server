@@ -1,40 +1,218 @@
-/school_env
-
+# ==========================================
 # Python
+# ==========================================
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*$py.class
 *.so
-*.egg
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
 *.egg-info/
-*.manifest
-*.spec
+.installed.cfg
+*.egg
+MANIFEST
 
-# Virtual environment
+# ==========================================
+# Virtual Environments
+# ==========================================
 env/
 venv/
 ENV/
 .venv/
-.env
+env.bak/
+venv.bak/
+school_env/
 
-# Django stuff
+# ==========================================
+# Django
+# ==========================================
 *.log
+*.pot
+*.pyc
+local_settings.py
 db.sqlite3
-*.sqlite3
-media/
-staticfiles/
+db.sqlite3-journal
+/media
+/staticfiles
+/static
+/coverage
 
-# Django migrations (only keep __init__.py)
-*/migrations/*
-!*/migrations/__init__.py
+# ==========================================
+# Environment Variables
+# ==========================================
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.development
 
-# IDE files
+# ==========================================
+# IDE - VS Code
+# ==========================================
 .vscode/
-.idea/
-*.swp
+*.code-workspace
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
 
-# OS files
+# ==========================================
+# IDE - PyCharm/IntelliJ
+# ==========================================
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# ==========================================
+# IDE - Sublime Text
+# ==========================================
+*.sublime-workspace
+*.sublime-project
+SublimeMerge/
+
+# ==========================================
+# IDE - Vim
+# ==========================================
+*.swp
+*.swo
+*~
+.netrwhist
+tags
+
+# ==========================================
+# IDE - Emacs
+# ==========================================
+\#*\#
+.#*
+\.\#*
+
+# ==========================================
+# Operating System Files
+# ==========================================
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
-migrations/
+desktop.ini
+
+# ==========================================
+# Testing & Coverage
+# ==========================================
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+.tox/
+.nox/
+coverage_html_report/
+
+# ==========================================
+# Documentation
+# ==========================================
+/docs/_build/
+/site/
+
+# ==========================================
+# Package Managers
+# ==========================================
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ==========================================
+# Database
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+*.psql
+
+# ==========================================
+# Logs & Temporary Files
+# ==========================================
+logs/
+*.log
+*.log.*
+/tmp/
+temp/
+*.tmp
+
+# ==========================================
+# Backup Files
+# ==========================================
+*.bak
+*.backup
+*.old
+*~
+
+# ==========================================
+# Security & Secrets
+# ==========================================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+credentials/
+config/secrets.py
+
+# ==========================================
+# Build & Deployment
+# ==========================================
+.build/
+.deploy/
+.war
+.jar
+
+# ==========================================
+# MyPy & Type Checking
+# ==========================================
+.dmypy.json
+dmypy.json
+.pytype/
+.mypy_cache/
+
+# ==========================================
+# Profiling & Performance
+# ==========================================
+*.prof
+*.profraw
+silk/
+
+# ==========================================
+# Claude Code & AI Tools
+# ==========================================
+.claude/
+.claude/memory/
+*.session
+
+# ==========================================
+# Project Specific
+# ==========================================
+media/uploads/
+user_uploads/
+export/
+csv_exports/
