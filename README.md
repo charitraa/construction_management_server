@@ -122,6 +122,87 @@ python manage.py runserver
 
 The API will be available at `http://localhost:8000`
 
+## 🐳 Docker Setup
+
+### Quick Start with Docker Compose
+
+```bash
+# Build and start all services
+make build
+make up
+
+# Or using docker-compose directly
+docker-compose up -d
+```
+
+### Docker Services
+
+The docker-compose setup includes:
+- **app**: Django application with Gunicorn
+- **db**: PostgreSQL database
+- **redis**: Redis cache and message broker
+- **celery_worker**: Celery worker for background tasks
+- **celery_beat**: Celery beat scheduler for periodic tasks
+
+### Common Docker Commands
+
+```bash
+# Show logs
+make logs           # All services
+make logs-app       # App service only
+make logs-db        # Database only
+
+# Run commands inside containers
+make shell          # Django shell
+make bash           # Bash shell
+make db             # PostgreSQL shell
+
+# Database operations
+make migrate        # Run migrations
+make makemigrations # Create migrations
+make createsuperuser  # Create admin user
+
+# Development
+make test           # Run tests
+make clean          # Remove all containers and volumes
+make rebuild        # Rebuild and restart services
+```
+
+### Environment Variables for Docker
+
+Ensure your `.env` file contains these Docker-specific variables:
+
+```env
+# Database (for Docker)
+POSTGRES_DB=construction_management
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+
+# Application
+DEBUG=True
+SECRET_KEY='your-secret-key-here'
+DATABASE_URL=postgresql://postgres:postgres@db:5432/construction_management
+REDIS_URL=redis://redis:6379/0
+ALLOWED_HOSTS=localhost,127.0.0.1
+```
+
+### Production Docker Deployment
+
+For production deployment:
+
+1. Use production environment variables
+2. Configure proper secret keys
+3. Use proper database passwords
+4. Set `DEBUG=False`
+5. Configure proper CORS origins
+6. Use persistent volumes for data
+7. Set up proper monitoring and logging
+
+```bash
+# Production compose (optional)
+docker-compose -f docker-compose.prod.yml up -d
+```
+
 ## 📚 API Documentation
 
 ### Base URL
