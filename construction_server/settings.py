@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'project',
     'revenue',
     'user',
+
     
 
 ]
@@ -121,7 +122,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'apps.user.validators.StrongPasswordValidator',
+        'NAME': 'user.validators.StrongPasswordValidator',
         'OPTIONS': {
             'min_length': 8,
         }
@@ -373,7 +374,7 @@ LOGGING = {
             "level": "INFO",
             "propagate": True,
         },
-        "apps.user": {
+        "user": {
             "handlers": ["console", "error_file"],
             "level": "INFO",
             "propagate": False,
