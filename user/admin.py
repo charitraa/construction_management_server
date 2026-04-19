@@ -2,30 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from django import forms
-from .models import User, Role, Page
-
-
-# =====================================================
-# ROLE ADMIN
-# =====================================================
-
-@admin.register(Role)
-class RoleAdmin(admin.ModelAdmin):
-    list_display = ("id","name",)
-    search_fields = ("name",)
-    ordering = ("name",)
-
-
-# =====================================================
-# PAGE ADMIN
-# =====================================================
-
-@admin.register(Page)
-class PageAdmin(admin.ModelAdmin):
-    list_display = ("id","name", "slug")
-    search_fields = ("name", "slug")
-    prepopulated_fields = {"slug": ("name",)}
-    ordering = ("name",)
+from .models import User
 
 
 # =====================================================
@@ -38,7 +15,7 @@ class UserCreationAdminForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("email", "full_name", "role", "pages")
+        fields = ("email", "full_name")
 
     def clean_password2(self):
         p1 = self.cleaned_data.get("password1")
@@ -72,7 +49,6 @@ class UserAdmin(BaseUserAdmin):
     list_display = (
         "email",
         "full_name",
-        "role",
         "is_active",
         "is_staff",
         "is_superuser",
@@ -80,7 +56,6 @@ class UserAdmin(BaseUserAdmin):
     )
 
     list_filter = (
-        "role",
         "is_active",
         "is_staff",
         "is_superuser",
@@ -89,7 +64,7 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ("email", "full_name")
     ordering = ("email",)
 
-    filter_horizontal = ("pages", "groups", "user_permissions")
+    filter_horizontal = ( "groups", "user_permissions")
 
     readonly_fields = ("date_joined", "last_login")
 
@@ -99,15 +74,6 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (_("Personal Info"), {"fields": ("full_name",)}),
-        (
-            _("Role & Page Access"),
-            {
-                "fields": (
-                    "role",
-                    "pages",
-                )
-            },
-        ),
         (
             _("Permissions"),
             {
@@ -134,8 +100,6 @@ class UserAdmin(BaseUserAdmin):
                 "fields": (
                     "email",
                     "full_name",
-                    "role",
-                    "pages",
                     "password1",
                     "password2",
                     "is_active",
@@ -149,4 +113,4 @@ class UserAdmin(BaseUserAdmin):
     # OPTIMIZATION
     # -------------------------
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("role").prefetch_related("pages")
+        return super().get_queryset(request)
