@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from core.permission import LoginRequiredPermission
 from .serializers import (
-    EmployeeSerializer,
     EmployeeCreateSerializer,
     EmployeeUpdateSerializer
 )

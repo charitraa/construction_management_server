@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from core.permission import LoginRequiredPermission
 from .serializers import (
-    RevenueSerializer,
     RevenueCreateSerializer,
     RevenueUpdateSerializer
 )
