@@ -5,13 +5,13 @@ from .models import Employee
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['id', 'name', 'role', 'daily_rate', 'phone', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'role', 'daily_rate', 'phone', 'address', 'created_at', 'updated_at']
 
 
 class EmployeeCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['id', 'name', 'role', 'daily_rate', 'phone']
+        fields = ['id', 'name', 'role', 'daily_rate', 'phone', 'address']
 
     def validate_daily_rate(self, value):
         if value <= 0:
@@ -22,7 +22,7 @@ class EmployeeCreateSerializer(serializers.ModelSerializer):
 class EmployeeUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['name', 'role', 'daily_rate', 'phone']
+        fields = ['name', 'role', 'daily_rate', 'phone', 'address']
 
     def validate_daily_rate(self, value):
         if value <= 0:

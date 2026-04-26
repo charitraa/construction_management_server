@@ -8,6 +8,7 @@ class Expense(models.Model):
         ('Materials', 'Materials'),
         ('Labor', 'Labor'),
         ('Equipment', 'Equipment'),
+        ('Advance', 'Advance'),
         ('Other', 'Other'),
     ]
 
