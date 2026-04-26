@@ -7,14 +7,18 @@ class EmployeeService:
     @staticmethod
     def get_all_employees():
         return EmployeeRepository.get_all()
-    
+
     @staticmethod
     def get_employee_by_id(employee_id):
         return EmployeeRepository.get_by_id(employee_id)
-    
+
     @staticmethod
     def get_employees_by_role(role):
         return EmployeeRepository.get_by_role(role)
+
+    @staticmethod
+    def search_employees(search_query=None, role=None):
+        return EmployeeRepository.search_employees(search_query, role)
     
     @staticmethod
     def create_employee(employee_data):

@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from core.permission import LoginRequiredPermission
 from .serializers import (
     EmployeeSerializer,
@@ -13,19 +14,31 @@ import csv
 import io
 
 
+class EmployeePagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class EmployeeListView(APIView):
     permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
+        search = request.query_params.get('search')
         role = request.query_params.get('role')
-        if role:
-            employees = EmployeeService.get_employees_by_role(role)
+
+        if search or role:
+            employees = EmployeeService.search_employees(search, role)
         else:
             employees = EmployeeService.get_all_employees()
-        return Response({
-            "data": EmployeeService.serialize_employees(employees),
+
+        paginator = EmployeePagination()
+        paginated_employees = paginator.paginate_queryset(employees, request)
+
+        return paginator.get_paginated_response({
+            "data": EmployeeService.serialize_employees(paginated_employees),
             "message": "Employee list retrieved successfully"
-        }, status=status.HTTP_200_OK)
+        })
 
 
 class EmployeeCreateView(APIView):
@@ -98,24 +111,26 @@ class EmployeeExportView(APIView):
     permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
+        search = request.query_params.get('search')
         role = request.query_params.get('role')
-        if role:
-            employees = EmployeeService.get_employees_by_role(role)
+
+        if search or role:
+            employees = EmployeeService.search_employees(search, role)
         else:
             employees = EmployeeService.get_all_employees()
-        
+
         if not employees.exists():
             return Response({
                 "error": "No employees to export"
             }, status=status.HTTP_400_BAD_REQUEST)
-        
+
         output = io.StringIO()
         writer = csv.writer(output)
-        writer.writerow(['Name', 'Role', 'Daily Rate', 'Phone'])
-        
+        writer.writerow(['Name', 'Role', 'Daily Rate', 'Phone', 'Address'])
+
         for emp in employees:
-            writer.writerow([emp.name, emp.role, emp.daily_rate, emp.phone])
-        
+            writer.writerow([emp.name, emp.role, emp.daily_rate, emp.phone, emp.address])
+
         output.seek(0)
         return Response({
             "data": output.getvalue(),

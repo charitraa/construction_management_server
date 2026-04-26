@@ -41,8 +41,6 @@ school_env/
 *.pot
 *.pyc
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
 /media
 /staticfiles
 /static
@@ -143,11 +141,6 @@ pip-delete-this-directory.txt
 # ==========================================
 # Database
 # ==========================================
-*.db
-*.sqlite
-*.sqlite3
-*.sql
-*.psql
 
 # ==========================================
 # Logs & Temporary Files

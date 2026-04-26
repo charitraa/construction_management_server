@@ -7,14 +7,30 @@ class EmployeeRepository:
     @staticmethod
     def get_all():
         return Employee.objects.all()
-    
+
     @staticmethod
     def get_by_id(employee_id):
         return Employee.objects.filter(id=employee_id).first()
-    
+
     @staticmethod
     def get_by_role(role):
         return Employee.objects.filter(role=role)
+
+    @staticmethod
+    def search_employees(search_query=None, role=None):
+        queryset = Employee.objects.all()
+
+        if search_query:
+            queryset = queryset.filter(
+                models.Q(name__icontains=search_query) |
+                models.Q(phone__icontains=search_query) |
+                models.Q(address__icontains=search_query)
+            )
+
+        if role:
+            queryset = queryset.filter(role=role)
+
+        return queryset
     
     @staticmethod
     def create_employee(employee_data):
