@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Attendance
+from employee.models import Employee
 
 
 class AttendanceSerializer(serializers.ModelSerializer):
@@ -8,12 +9,14 @@ class AttendanceSerializer(serializers.ModelSerializer):
     employee_name = serializers.CharField(source='employee.name', read_only=True)
     employee_role = serializers.CharField(source='employee.role', read_only=True)
     employee_id = serializers.UUIDField(source='employee.id', read_only=True)
+    employee_email = serializers.CharField(source='employee.email', read_only=True)
+    employee_avatar = serializers.CharField(source='employee.avatar', read_only=True)
 
     class Meta:
         model = Attendance
         fields = [
             'id', 'date', 'employee', 'employee_id', 'employee_name', 'employee_role',
-            'status', 'created_at', 'updated_at'
+            'employee_email', 'employee_avatar', 'status','created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
@@ -70,3 +73,30 @@ class AttendanceUpdateSerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError("Employee is required.")
         return value
+
+
+class EmployeeAttendanceSerializer(serializers.Serializer):
+    """Serializer for employee attendance list response."""
+
+    id = serializers.CharField()
+    name = serializers.CharField()
+    email = serializers.CharField(allow_blank=True, allow_null=True)
+    department = serializers.CharField()
+    avatar = serializers.CharField(allow_blank=True, allow_null=True)
+    status = serializers.CharField(allow_null=True)
+    record_id = serializers.CharField(allow_null=True)
+
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    """Serializer for employee data."""
+
+    class Meta:
+        model = Employee
+        fields = ['id', 'name', 'email', 'role', 'avatar', 'daily_rate', 'phone', 'address']
+        read_only_fields = ['id']
+
+
+class DepartmentSerializer(serializers.Serializer):
+    """Serializer for department list."""
+
+    name = serializers.CharField()
