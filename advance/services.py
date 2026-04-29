@@ -36,7 +36,9 @@ class AdvanceService:
     def get_advance_stats():
         total_by_employee = AdvanceRepository.total_by_employee()
         return {
-            "total": AdvanceRepository.total_amount(),
+            "total_advance": AdvanceRepository.total_amount(),
             "total_count": AdvanceRepository.count_all(),
-            "by_employee": total_by_employee,
+            "unique_employees": AdvanceRepository.unique_employees_count(),
+            "average_advance": AdvanceRepository.average_advance(),
+            "highest_advance": AdvanceRepository.highest_advance(),
         }

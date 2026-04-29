@@ -1,4 +1,4 @@
-from django.db.models import Sum
+from django.db.models import Sum, Avg, Max
 from .models import Advance
 
 
@@ -35,4 +35,18 @@ class AdvanceRepository:
     @staticmethod
     def total_by_employee():
         result = Advance.objects.values('employee_id').annotate(total=Sum('amount'))
-        return {item['employee_id']: item['total'] or 0 for item in result}
+        return {str(item['employee_id']): item['total'] or 0 for item in result}
+
+    @staticmethod
+    def unique_employees_count():
+        return Advance.objects.values('employee_id').distinct().count()
+
+    @staticmethod
+    def average_advance():
+        result = Advance.objects.aggregate(avg=Avg('amount'))['avg']
+        return result or 0
+
+    @staticmethod
+    def highest_advance():
+        result = Advance.objects.aggregate(max=Max('amount'))['max']
+        return result or 0
