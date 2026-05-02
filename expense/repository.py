@@ -1,4 +1,4 @@
-from django.db.models import Sum
+from django.db.models import Sum, Max
 from .models import Expense
 
 
@@ -47,3 +47,7 @@ class ExpenseRepository:
     def total_by_category():
         result = Expense.objects.values('category').annotate(total=Sum('amount'))
         return {item['category']: item['total'] or 0 for item in result}
+
+    @staticmethod
+    def highest_expense():
+        return Expense.objects.aggregate(max_amount=Max('amount'))['max_amount'] or 0

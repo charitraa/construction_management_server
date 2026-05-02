@@ -123,7 +123,7 @@ class ProjectExportView(APIView):
 
         output = io.StringIO()
         writer = csv.writer(output)
-        writer.writerow(['Project ID', 'Project Name', 'Description', 'Client', 'Location', 'Start Date', 'End Date', 'Status', 'Budget', 'Contract Value'])
+        writer.writerow(['Project ID', 'Project Name', 'Description', 'Client', 'Location', 'Start Date', 'Status', 'Budget'])
 
         for proj in projects:
             writer.writerow([
@@ -133,10 +133,8 @@ class ProjectExportView(APIView):
                 proj.client_name,
                 proj.location,
                 str(proj.start_date) if proj.start_date else '',
-                str(proj.end_date) if proj.end_date else '',
                 proj.status,
-                str(proj.budget),
-                str(proj.contract_value)
+                str(proj.budget)
             ])
 
         output.seek(0)

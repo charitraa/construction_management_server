@@ -34,11 +34,6 @@ class ProjectRepository:
     @staticmethod
     def count_all():
         return Project.objects.count()
-    
-    @staticmethod
-    def total_contract_value():
-        from django.db.models import Sum
-        return Project.objects.aggregate(total=Sum('contract_value'))['total'] or 0
 
     @staticmethod
     def get_by_status(status):

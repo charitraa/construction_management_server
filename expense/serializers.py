@@ -3,11 +3,14 @@ from .models import Expense
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
-    project_name = serializers.CharField(source='project.name', read_only=True)
+    project_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Expense
         fields = ['id', 'date', 'project', 'project_name', 'category', 'description', 'amount', 'created_at', 'updated_at']
+
+    def get_project_name(self, obj):
+        return obj.project.name if obj.project else None
 
 
 class ExpenseCreateSerializer(serializers.ModelSerializer):
@@ -16,6 +19,7 @@ class ExpenseCreateSerializer(serializers.ModelSerializer):
         fields = ['id', 'date', 'project', 'category', 'description', 'amount']
 
     def validate_amount(self, value):
+        
         if value <= 0:
             raise serializers.ValidationError("Amount must be greater than 0")
         return value

@@ -17,10 +17,8 @@ class Project(models.Model):
     client_name = models.CharField(max_length=200)
     location = models.CharField(max_length=300)
     start_date = models.DateField(blank=True, null=True)
-    end_date = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='planned')
     budget = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    contract_value = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

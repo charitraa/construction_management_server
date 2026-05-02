@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from core.permission import LoginRequiredPermission
 from .serializers import (
-    ExpenseSerializer,
     ExpenseCreateSerializer,
     ExpenseUpdateSerializer
 )
@@ -13,15 +13,42 @@ import csv
 import io
 
 
+class ExpensePagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class ExpenseListView(APIView):
     permission_classes = [LoginRequiredPermission]
 
     def get(self, request, *args, **kwargs):
+        category = request.query_params.get('category')
+        project = request.query_params.get('project')
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+        search = request.query_params.get('search')
+
         expenses = ExpenseService.get_all_expenses()
-        return Response({
-            "data": ExpenseService.serialize_expenses(expenses),
+
+        if category:
+            expenses = expenses.filter(category=category)
+        if project and project != 'all':
+            expenses = expenses.filter(project=project)
+        if start_date:
+            expenses = expenses.filter(date__gte=start_date)
+        if end_date:
+            expenses = expenses.filter(date__lte=end_date)
+        if search:
+            expenses = expenses.filter(description__icontains=search)
+
+        paginator = ExpensePagination()
+        paginated_expenses = paginator.paginate_queryset(expenses, request)
+
+        return paginator.get_paginated_response({
+            "data": ExpenseService.serialize_expenses(paginated_expenses),
             "message": "Expense list retrieved successfully"
-        }, status=status.HTTP_200_OK)
+        })
 
 
 class ExpenseCreateView(APIView):

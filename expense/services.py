@@ -43,11 +43,15 @@ class ExpenseService:
     @staticmethod
     def get_expense_stats():
         category_totals = ExpenseRepository.total_by_category()
+        total_amount = ExpenseRepository.total_amount()
+        total_count = ExpenseRepository.count_all()
+        highest_expense = ExpenseRepository.highest_expense()
+        average_expense = total_amount / total_count if total_count > 0 else 0
+
         return {
-            "total": ExpenseRepository.total_amount(),
-            "total_count": ExpenseRepository.count_all(),
-            "Materials": category_totals.get('Materials', 0),
-            "Labor": category_totals.get('Labor', 0),
-            "Equipment": category_totals.get('Equipment', 0),
-            "Other": category_totals.get('Other', 0),
+            "total_expenses": total_amount,
+            "category_breakdown": category_totals,
+            "transaction_count": total_count,
+            "average_expense": average_expense,
+            "highest_expense": highest_expense,
         }

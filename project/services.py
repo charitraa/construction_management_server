@@ -44,7 +44,6 @@ class ProjectService:
     def get_project_stats():
         return {
             "total": ProjectRepository.count_all(),
-            "total_value": ProjectRepository.total_contract_value(),
             "ongoing": ProjectRepository.get_active_projects_count(),
             "by_status": ProjectRepository.count_by_status()
         }
