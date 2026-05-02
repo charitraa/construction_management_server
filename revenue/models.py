@@ -20,6 +20,7 @@ class Revenue(models.Model):
     date = models.DateField()
     project = models.ForeignKey('project.Project', on_delete=models.SET_NULL, null=True, blank=True, related_name='revenues')
     client_name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     pay_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, default='Cash')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Received')

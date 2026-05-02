@@ -7,13 +7,13 @@ class RevenueSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Revenue
-        fields = ['id', 'date', 'project', 'project_name', 'client_name', 'amount', 'pay_method', 'status', 'created_at', 'updated_at']
+        fields = ['id', 'date', 'project', 'project_name', 'client_name', 'description', 'amount', 'pay_method', 'status', 'created_at', 'updated_at']
 
 
 class RevenueCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Revenue
-        fields = ['id', 'date', 'project', 'client_name', 'amount', 'pay_method', 'status']
+        fields = ['id', 'date', 'project', 'client_name', 'description', 'amount', 'pay_method', 'status']
 
     def validate_amount(self, value):
         if value <= 0:
@@ -30,7 +30,7 @@ class RevenueCreateSerializer(serializers.ModelSerializer):
 class RevenueUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Revenue
-        fields = ['date', 'project', 'client_name', 'amount', 'pay_method', 'status']
+        fields = ['date', 'project', 'client_name', 'description', 'amount', 'pay_method', 'status']
 
     def validate_amount(self, value):
         if value <= 0:

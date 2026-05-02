@@ -1,4 +1,4 @@
-from django.db.models import Sum
+from django.db.models import Sum, Avg, Max
 from .models import Revenue
 
 
@@ -51,3 +51,21 @@ class RevenueRepository:
     def total_by_status():
         result = Revenue.objects.values('status').annotate(total=Sum('amount'))
         return {item['status']: item['total'] or 0 for item in result}
+
+    @staticmethod
+    def average_amount():
+        return Revenue.objects.aggregate(avg=Avg('amount'))['avg'] or 0
+
+    @staticmethod
+    def highest_amount():
+        return Revenue.objects.aggregate(max=Max('amount'))['max'] or 0
+
+    @staticmethod
+    def total_by_project():
+        result = Revenue.objects.values('project__name').annotate(
+            total=Sum('amount')
+        ).filter(total__gt=0).order_by('-total')
+        return [
+            {'name': item['project__name'], 'total': item['total'] or 0}
+            for item in result if item['project__name']
+        ]

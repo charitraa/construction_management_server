@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from core.permission import LoginRequiredPermission
+from core.pagination import StandardPagination
 from .serializers import (
     ProjectSerializer,
     ProjectCreateSerializer,
@@ -28,10 +29,13 @@ class ProjectListView(APIView):
             projects = ProjectService.get_projects_by_status(status_param)
         else:
             projects = ProjectService.get_all_projects()
-        return Response({
-            "data": ProjectService.serialize_projects(projects),
-            "message": "Project list retrieved successfully"
-        }, status=status.HTTP_200_OK)
+
+        paginator = StandardPagination()
+        paginated_projects = paginator.paginate_queryset(projects, request)
+        return paginator.get_paginated_response(
+            ProjectService.serialize_projects(paginated_projects),
+            "Project list retrieved successfully"
+        )
 
 
 class ProjectCreateView(APIView):

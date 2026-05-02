@@ -46,11 +46,10 @@ class RevenueService:
     
     @staticmethod
     def get_revenue_stats():
-        status_totals = RevenueRepository.total_by_status()
         return {
-            "total": RevenueRepository.total_amount(),
-            "total_count": RevenueRepository.count_all(),
-            "Received": status_totals.get('Received', 0),
-            "Pending": status_totals.get('Pending', 0),
-            "Overdue": status_totals.get('Overdue', 0),
+            "total_revenue": RevenueRepository.total_amount(),
+            "average_revenue": RevenueRepository.average_amount(),
+            "highest_revenue": RevenueRepository.highest_amount(),
+            "total_records": RevenueRepository.count_all(),
+            "project_breakdown": RevenueRepository.total_by_project(),
         }
