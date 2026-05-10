@@ -222,7 +222,7 @@ class AttendanceExportView2(APIView):
         # Get export parameters
         start_date = request.query_params.get('start_date')
         end_date = request.query_params.get('end_date')
-        export_format = request.query_params.get('format', 'csv').lower()
+        export_format = request.query_params.get('export_format', 'csv').lower()
         include_stats = request.query_params.get('include_stats', 'true').lower() == 'true'
         department = request.query_params.get('department', 'all')
         status_filter = request.query_params.get('status', 'all')

@@ -130,7 +130,7 @@ class AttendanceRepository:
     @staticmethod
     def get_unique_departments():
         """Get list of unique departments (roles) from employees."""
-        return Employee.objects.values_list('role', flat=True).distinct()
+        return list(set(Employee.objects.values_list('role', flat=True).exclude(role__isnull=True).exclude(role='')))
 
     @staticmethod
     def get_total_employees_count():
