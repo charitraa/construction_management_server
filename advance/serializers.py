@@ -26,3 +26,20 @@ class AdvanceCreateSerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError("Employee is required.")
         return value
+
+
+class AdvanceUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Advance
+        fields = ['id', 'date', 'employee', 'amount']
+
+    def validate_amount(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("Amount must be greater than 0")
+        return value
+
+    def validate_employee(self, value):
+        """Validate that employee exists."""
+        if not value:
+            raise serializers.ValidationError("Employee is required.")
+        return value

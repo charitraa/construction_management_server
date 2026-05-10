@@ -351,8 +351,18 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
 
 #### List All Advances
 ```http
-GET /advance/list/
+GET /advance/list/?page=1&page_size=10&search=john&start_date=2026-01-01&end_date=2026-12-31&year=2026&month=5&employee_id=123
 Authorization: Bearer YOUR_ACCESS_TOKEN
+
+**Query Parameters:**
+- `page` (optional): Page number (default: 1)
+- `page_size` (optional): Number of items per page (default: 10, max: 100)
+- `search` (optional): Search by employee name (case-insensitive partial match)
+- `employee_id` (optional): Filter by specific employee ID
+- `start_date` (optional): Filter advances from this date onwards (YYYY-MM-DD)
+- `end_date` (optional): Filter advances up to this date (YYYY-MM-DD)
+- `year` (optional): Filter by year
+- `month` (optional): Filter by month (1-12)
 ```
 
 #### Create Advance
@@ -365,6 +375,19 @@ Content-Type: application/json
   "date": "2026-04-17",
   "employee": "employee_id",
   "amount": 5000.00
+}
+```
+
+#### Update Advance
+```http
+PUT /advance/update/advance_id/
+Authorization: Bearer YOUR_ACCESS_TOKEN
+Content-Type: application/json
+
+{
+  "date": "2026-04-17",
+  "employee": "employee_id",
+  "amount": 6000.00
 }
 ```
 

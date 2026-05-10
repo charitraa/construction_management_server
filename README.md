@@ -334,11 +334,12 @@ module/
 - `DELETE /delete/<id>/` - Delete record
 
 ### Advances (`/api/advance/`)
-- `GET /list/` - Get all advance records
+- `GET /list/` - Get all advance records (paginated, searchable, filterable)
 - `POST /create/` - Record new advance
 - `GET /stats/` - Get advance statistics
 - `GET /export/` - Export advance data as CSV
 - `GET /details/<id>/` - Get specific advance
+- `PUT /update/<id>/` - Update advance record
 - `DELETE /delete/<id>/` - Delete advance
 
 ### Payroll (`/api/payroll/`)
