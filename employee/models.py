@@ -18,7 +18,7 @@ class Employee(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    last_paid_date = models.DateField(null=True, blank=True, help_text="Last date wages were paid out")
     class Meta:
         ordering = ['-created_at']
 

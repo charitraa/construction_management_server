@@ -22,7 +22,6 @@ class AdvanceCreateSerializer(serializers.ModelSerializer):
         return value
 
     def validate_employee(self, value):
-        """Validate that employee exists."""
         if not value:
             raise serializers.ValidationError("Employee is required.")
         return value
@@ -39,7 +38,6 @@ class AdvanceUpdateSerializer(serializers.ModelSerializer):
         return value
 
     def validate_employee(self, value):
-        """Validate that employee exists."""
         if not value:
             raise serializers.ValidationError("Employee is required.")
         return value

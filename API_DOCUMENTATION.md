@@ -397,6 +397,39 @@ GET /advance/stats/
 Authorization: Bearer YOUR_ACCESS_TOKEN
 ```
 
+#### List All Payments
+```http
+GET /advance/payments/list/?page=1&page_size=10&search=john&payment_type=wage&start_date=2026-01-01&end_date=2026-12-31
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+**Query Parameters:**
+- `page` (optional): Page number (default: 1)
+- `page_size` (optional): Number of items per page (default: 10, max: 100)
+- `search` (optional): Search by employee name (case-insensitive partial match)
+- `employee_id` (optional): Filter by specific employee ID
+- `payment_type` (optional): Filter by payment type ('wage' or 'advance')
+- `start_date` (optional): Filter payments from this date onwards (YYYY-MM-DD)
+- `end_date` (optional): Filter payments up to this date (YYYY-MM-DD)
+```
+
+#### Create Payment
+```http
+POST /advance/payments/create/
+Authorization: Bearer YOUR_ACCESS_TOKEN
+Content-Type: application/json
+
+{
+  "date": "2026-04-17",
+  "employee": "employee_id",
+  "payment_type": "wage",
+  "amount": 2500.00,
+  "days_paid": 5,
+  "start_date": "2026-04-01",
+  "end_date": "2026-04-05",
+  "notes": "Payment for first 5 days of work"
+}
+```
+
 ### Payroll
 
 #### Get Payroll for Month
@@ -413,11 +446,30 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
       "id": "employee_id",
       "name": "John Doe",
       "role": "Mason",
-      "days_worked": 20,
+      "days_worked_since_last_payment": 15,
+      "last_payment_date": "2026-04-05",
+      "calculation_start_date": "2026-04-06",
       "daily_rate": 500.00,
-      "total_wage": 10000.00,
+      "daily_breakdown": [
+        {
+          "date": "2026-04-06",
+          "status": "Present",
+          "daily_wage": 500.00
+        },
+        {
+          "date": "2026-04-07",
+          "status": "Present",
+          "daily_wage": 500.00
+        },
+        {
+          "date": "2026-04-08",
+          "status": "Absent",
+          "daily_wage": 0
+        }
+      ],
+      "total_wage_earned": 7500.00,
       "advance": 2000.00,
-      "net_pay": 8000.00
+      "net_pay": 5500.00
     }
   ],
   "message": "Payroll data retrieved successfully"

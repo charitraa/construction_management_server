@@ -3,11 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from core.permission import LoginRequiredPermission
 from core.pagination import StandardPagination
-from .serializers import (
-    AdvanceSerializer,
-    AdvanceCreateSerializer,
-    AdvanceUpdateSerializer
-)
+from .serializers import AdvanceSerializer, AdvanceCreateSerializer, AdvanceUpdateSerializer
 from .services import AdvanceService
 from .exceptions import AdvanceNotFoundException
 
@@ -18,17 +14,14 @@ class AdvanceListView(APIView):
     def get(self, request, *args, **kwargs):
         advances = AdvanceService.get_all_advances()
 
-        # Filter by search term (employee name)
         search = request.query_params.get('search')
         if search:
             advances = advances.filter(employee__name__icontains=search)
 
-        # Filter by employee
         employee_id = request.query_params.get('employee_id')
         if employee_id:
             advances = advances.filter(employee_id=employee_id)
 
-        # Filter by date range
         start_date = request.query_params.get('start_date')
         end_date = request.query_params.get('end_date')
         if start_date and end_date:
@@ -38,17 +31,14 @@ class AdvanceListView(APIView):
         elif end_date:
             advances = advances.filter(date__lte=end_date)
 
-        # Filter by year
         year = request.query_params.get('year')
         if year:
             advances = advances.filter(date__year=year)
 
-        # Filter by month
         month = request.query_params.get('month')
         if month:
             advances = advances.filter(date__month=month)
 
-        # Apply pagination
         paginator = StandardPagination()
         paginated_advances = paginator.paginate_queryset(advances, request)
         return paginator.get_paginated_response(

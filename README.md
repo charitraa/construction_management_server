@@ -341,6 +341,10 @@ module/
 - `GET /details/<id>/` - Get specific advance
 - `PUT /update/<id>/` - Update advance record
 - `DELETE /delete/<id>/` - Delete advance
+- `GET /payments/list/` - Get all payment records (paginated, searchable, filterable)
+- `POST /payments/create/` - Record new payment
+- `GET /payments/details/<id>/` - Get specific payment
+- `DELETE /payments/delete/<id>/` - Delete payment
 
 ### Payroll (`/api/payroll/`)
 - `GET /by-month/?month=YYYY-MM` - Get payroll for month

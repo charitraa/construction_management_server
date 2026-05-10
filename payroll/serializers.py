@@ -1,4 +1,11 @@
 from rest_framework import serializers
+class DailyWageSerializer(serializers.Serializer):
+    """
+    Serializer for daily wage breakdown.
+    """
+    date = serializers.DateField()
+    status = serializers.CharField()
+    daily_wage = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 
 class EmployeePayrollSerializer(serializers.Serializer):
@@ -10,9 +17,12 @@ class EmployeePayrollSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     name = serializers.CharField()
     role = serializers.CharField()
-    days_worked = serializers.IntegerField()
+    days_worked_since_last_payment = serializers.IntegerField()
+    last_payment_date = serializers.DateField(allow_null=True)
+    calculation_start_date = serializers.DateField()
     daily_rate = serializers.DecimalField(max_digits=10, decimal_places=2)
-    total_wage = serializers.DecimalField(max_digits=15, decimal_places=2)
+    daily_breakdown = DailyWageSerializer(many=True)
+    total_wage_earned = serializers.DecimalField(max_digits=15, decimal_places=2)
     advance = serializers.DecimalField(max_digits=15, decimal_places=2)
     net_pay = serializers.DecimalField(max_digits=15, decimal_places=2)
 

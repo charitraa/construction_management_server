@@ -1,4 +1,4 @@
-from django.db import models, transaction
+from django.db import models
 import uuid
 
 
@@ -19,19 +19,12 @@ class Advance(models.Model):
 
     def save(self, *args, **kwargs):
         from expense.models import Expense
-
-        # Check if this is a new advance (not updating)
         is_new = self._state.adding
-
-        # Save the advance first
         super().save(*args, **kwargs)
-
-        # If new advance, create corresponding expense record
         if is_new:
-            with transaction.atomic():
-                Expense.objects.create(
-                    date=self.date,
-                    category='Advance',
-                    description=f"Advance to {self.employee.name} - {self.employee.role}",
-                    amount=self.amount
-                )
+            Expense.objects.create(
+                date=self.date,
+                category='Advance',
+                description=f"Advance to {self.employee.name} - {self.employee.role}",
+                amount=self.amount
+            )

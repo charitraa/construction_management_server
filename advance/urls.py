@@ -5,7 +5,7 @@ from .views import (
     AdvanceRetrieveView,
     AdvanceUpdateView,
     AdvanceDestroyView,
-    AdvanceStatsView
+    AdvanceStatsView,
 )
 
 urlpatterns = [
