@@ -43,7 +43,6 @@ school_env/
 local_settings.py
 /media
 /staticfiles
-/static
 /coverage
 
 # ==========================================
