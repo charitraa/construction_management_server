@@ -36,6 +36,7 @@ pyparsing==3.3.2
 python-decouple==3.8
 redis==7.1.0
 requests==2.33.1
+rest-framework-simplejwt==0.0.2
 rich==14.3.3
 sortedcontainers==2.4.0
 sqlparse==0.5.5
