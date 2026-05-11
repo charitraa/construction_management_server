@@ -14,6 +14,6 @@ jobs:
         uses: jensvog/pythonanywhere-webapp-reload-action@v1
         with:
           host: 'www.pythonanywhere.com'  # or 'eu.pythonanywhere.com' for EU servers
-          username: ${{ secrets.PA_USERNAME }}
-          api-token: ${{ secrets.PA_API_TOKEN }}
-          domain-name: ${{ secrets.PA_DOMAIN_NAME }}
+          username: 'yakshasoft'
+          api-token: '1454c5738a1379e60612bf44f5ae17fcfd8b7040'
+          domain-name: 'https://yakshasoft.pythonanywhere.com'
