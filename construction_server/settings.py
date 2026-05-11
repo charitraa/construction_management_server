@@ -89,7 +89,7 @@ ROOT_URLCONF = 'construction_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+       'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -153,19 +153,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
+# Static files
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Environment-specific static files settings
-if ENVIRONMENT == 'production':
-    # Production: Serve static files from whitenoise or similar
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # Additional production static file settings can be added here
-else:
-    # Development: No additional static files configuration needed
-    pass
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # File upload security settings
 # These settings apply to all file uploads in the application
