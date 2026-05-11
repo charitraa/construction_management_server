@@ -1,7 +1,7 @@
 name: Deploy to PythonAnywhere
 on:
   push:
-    branches: [ main ]  # Adjust branch name as needed
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -10,10 +10,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Pull latest code on PythonAnywhere
+        run: |
+          curl -s -X POST \
+            --data "bash_command=cd /home/yakshasoft/construction_management_server && git pull origin main" \
+            -H "Authorization: Token 1454c5738a1379e60612bf44f5ae17fcfd8b7040" \
+            https://www.pythonanywhere.com/api/v0/user/yakshasoft/consoles/
+
       - name: Reload PythonAnywhere Web App
         uses: jensvog/pythonanywhere-webapp-reload-action@v1
         with:
-          host: 'www.pythonanywhere.com'  # or 'eu.pythonanywhere.com' for EU servers
+          host: 'www.pythonanywhere.com'
           username: 'yakshasoft'
-          api-token: '1454c5738a1379e60612bf44f5ae17fcfd8b7040'
+          api-token: 1454c5738a1379e60612bf44f5ae17fcfd8b7040
           domain-name: 'yakshasoft.pythonanywhere.com'
