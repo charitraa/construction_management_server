@@ -6,13 +6,15 @@ from .views import (
     ProjectUpdateView,
     ProjectDestroyView,
     ProjectStatsView,
-    ProjectExportView
+    ProjectExportView,
+    ProjectReceivablesView
 )
 
 urlpatterns = [
     path('list/', ProjectListView.as_view(), name='project-list'),
     path('create/', ProjectCreateView.as_view(), name='project-create'),
     path('stats/', ProjectStatsView.as_view(), name='project-stats'),
+    path('receivables/', ProjectReceivablesView.as_view(), name='project-receivables'),
     path('export/', ProjectExportView.as_view(), name='project-export'),
     path('details/<str:project_id>/', ProjectRetrieveView.as_view(), name='project-detail'),
     path('update/<str:project_id>/', ProjectUpdateView.as_view(), name='project-update'),

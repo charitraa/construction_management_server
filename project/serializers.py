@@ -12,6 +12,29 @@ class ProjectSerializer(serializers.ModelSerializer):
         ]
 
 
+class ProjectReceivableSerializer(serializers.ModelSerializer):
+    """Per-project receivable: how much the client still owes.
+
+    `received` is annotated on the queryset (sum of 'Received' revenue);
+    `remaining` is budget minus received.
+    """
+    budget = serializers.FloatField()
+    received = serializers.FloatField()
+    remaining = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Project
+        fields = [
+            'id', 'name', 'client_name', 'location', 'status',
+            'budget', 'received', 'remaining'
+        ]
+
+    def get_remaining(self, obj):
+        budget = float(obj.budget or 0)
+        received = float(getattr(obj, 'received', 0) or 0)
+        return round(budget - received, 2)
+
+
 class ProjectCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project

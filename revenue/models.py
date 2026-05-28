@@ -11,7 +11,7 @@ class Revenue(models.Model):
     ]
 
     PAYMENT_METHOD_CHOICES = [
-        ('Cash', 'Cash'),
+        ('Cash', 'Cash'),        
         ('Online', 'Online'),
         ('Check', 'Check'),
     ]

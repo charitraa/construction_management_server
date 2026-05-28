@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from core.permission import LoginRequiredPermission
 from core.pagination import StandardPagination
+from django.db import models
 from .serializers import (
     ProjectSerializer,
     ProjectCreateSerializer,
@@ -101,6 +102,41 @@ class ProjectStatsView(APIView):
         return Response({
             "data": stats,
             "message": "Project statistics retrieved successfully"
+        }, status=status.HTTP_200_OK)
+
+
+class ProjectReceivablesView(APIView):
+    permission_classes = [LoginRequiredPermission]
+
+    def get(self, request, *args, **kwargs):
+        """Per-project outstanding amounts owed by clients (budget - received)."""
+        search = request.query_params.get('search')
+        status_param = request.query_params.get('status')
+        outstanding_only = request.query_params.get('outstanding_only')
+
+        projects = ProjectService.get_receivables()
+
+        if search:
+            projects = projects.filter(
+                models.Q(name__icontains=search) |
+                models.Q(client_name__icontains=search) |
+                models.Q(location__icontains=search)
+            )
+
+        if status_param:
+            projects = projects.filter(status=status_param)
+
+        rows = ProjectService.serialize_receivables(projects)
+
+        if outstanding_only in ('1', 'true', 'True'):
+            rows = [row for row in rows if row['remaining'] > 0]
+
+        summary = ProjectService.get_receivables_summary(rows)
+
+        return Response({
+            "data": rows,
+            "summary": summary,
+            "message": "Project receivables retrieved successfully"
         }, status=status.HTTP_200_OK)
 
 

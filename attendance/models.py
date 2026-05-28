@@ -5,7 +5,8 @@ import uuid
 class Attendance(models.Model):
 
     STATUS_CHOICES = [
-        ('Present', 'Present'),
+        ('Full Day', 'Full Day'),
+        ('Half Day', 'Half Day'),
         ('Absent', 'Absent'),
     ]
 
