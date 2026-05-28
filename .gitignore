@@ -208,3 +208,5 @@ media/uploads/
 user_uploads/
 export/
 csv_exports/
+/db.sqlite3
+/db.sqlite3
