@@ -39,8 +39,10 @@ class PayrollRepository:
                 employee.id, calc_start
             )
             for attendance in attendance_records:
-                if attendance.status == 'Present':
+                if attendance.status == 'Full Day':
                     total_wages += float(employee.daily_rate)
+                elif attendance.status == 'Half Day':
+                    total_wages += float(employee.daily_rate) / 2
 
             advance_result = Advance.objects.filter(
                 employee=employee,

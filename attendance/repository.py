@@ -69,11 +69,14 @@ class AttendanceRepository:
         """
         queryset = Attendance.objects.filter(date=date)
         total = queryset.count()
-        present = queryset.filter(status='Present').count()
+        full_day = queryset.filter(status='Full Day').count()
+        half_day = queryset.filter(status='Half Day').count()
         absent = queryset.filter(status='Absent').count()
         return {
             'total': total,
-            'present': present,
+            'present': full_day + half_day,
+            'full_day': full_day,
+            'half_day': half_day,
             'absent': absent
         }
 
@@ -146,14 +149,18 @@ class AttendanceRepository:
         records = Attendance.objects.filter(date__range=[start_date, end_date])
         unique_dates = records.values('date').distinct().count()
         total_records = records.count()
-        present = records.filter(status='Present').count()
+        full_day = records.filter(status='Full Day').count()
+        half_day = records.filter(status='Half Day').count()
         absent = records.filter(status='Absent').count()
-        attendance_rate = (present / total_records * 100) if total_records > 0 else 0
+        present = full_day + half_day
+        attendance_rate = ((full_day + half_day * 0.5) / total_records * 100) if total_records > 0 else 0
 
         return {
             'total_days': unique_dates,
             'total_records': total_records,
             'total_present': present,
+            'total_full_day': full_day,
+            'total_half_day': half_day,
             'total_absent': absent,
             'average_attendance': round(attendance_rate, 1)
         }

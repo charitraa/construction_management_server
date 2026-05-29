@@ -116,15 +116,19 @@ class AttendanceService:
         if status and status != 'all':
             records = records.filter(status=status)
 
-        filtered_present = records.filter(status='Present').count()
+        filtered_full_day = records.filter(status='Full Day').count()
+        filtered_half_day = records.filter(status='Half Day').count()
         filtered_absent = records.filter(status='Absent').count()
+        filtered_present = filtered_full_day + filtered_half_day
         filtered_total = records.count()
-        filtered_percentage = (filtered_present / filtered_total * 100) if filtered_total > 0 else 0
+        filtered_percentage = ((filtered_full_day + filtered_half_day * 0.5) / filtered_total * 100) if filtered_total > 0 else 0
 
         return {
             'total_days': base_stats['total_days'],
             'total_records': base_stats['total_records'],
             'total_present': filtered_present,
+            'total_full_day': filtered_full_day,
+            'total_half_day': filtered_half_day,
             'total_absent': filtered_absent,
             'average_attendance': round(filtered_percentage, 1)
         }

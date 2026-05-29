@@ -29,7 +29,7 @@ class AttendanceCreateSerializer(serializers.ModelSerializer):
         fields = ['date', 'employee', 'status']
 
     def validate_status(self, value):
-        valid_statuses = ['Present', 'Absent']
+        valid_statuses = ['Full Day', 'Half Day', 'Absent']
         if value not in valid_statuses:
             raise serializers.ValidationError(f"Status must be one of {valid_statuses}")
         return value
@@ -63,7 +63,7 @@ class AttendanceUpdateSerializer(serializers.ModelSerializer):
         fields = ['date', 'employee', 'status']
 
     def validate_status(self, value):
-        valid_statuses = ['Present', 'Absent']
+        valid_statuses = ['Full Day', 'Half Day', 'Absent']
         if value not in valid_statuses:
             raise serializers.ValidationError(f"Status must be one of {valid_statuses}")
         return value

@@ -36,10 +36,19 @@ class PayrollService:
             days_worked_since_last_payment = 0
 
             for attendance in attendance_records:
-                if attendance.status == 'Present':
+                if attendance.status == 'Full Day':
                     daily_wage = float(employee.daily_rate)
                     total_wage += daily_wage
                     days_worked_since_last_payment += 1
+                    daily_wages.append({
+                        'date': attendance.date,
+                        'status': attendance.status,
+                        'daily_wage': daily_wage,
+                    })
+                elif attendance.status == 'Half Day':
+                    daily_wage = float(employee.daily_rate) / 2
+                    total_wage += daily_wage
+                    days_worked_since_last_payment += 0.5
                     daily_wages.append({
                         'date': attendance.date,
                         'status': attendance.status,

@@ -204,7 +204,9 @@ class DashboardRepository:
         if total_attendance.count() == 0:
             return 0
 
-        present_count = total_attendance.filter(status='Present').count()
+        full_day_count = total_attendance.filter(status='Full Day').count()
+        half_day_count = total_attendance.filter(status='Half Day').count()
+        present_count = full_day_count + (half_day_count * 0.5)
         attendance_rate = (present_count / total_attendance.count()) * 100
 
         return round(attendance_rate, 1)
