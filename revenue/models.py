@@ -1,8 +1,10 @@
 from django.db import models
 import uuid
 
+from core.tenancy import OwnedModel
 
-class Revenue(models.Model):
+
+class Revenue(OwnedModel):
 
     STATUS_CHOICES = [
         ('Received', 'Received'),
@@ -27,7 +29,7 @@ class Revenue(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
+    class Meta(OwnedModel.Meta):
         ordering = ['-date']
 
     def __str__(self):

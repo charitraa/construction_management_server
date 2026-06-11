@@ -1,8 +1,10 @@
 from django.db import models
 import uuid
 
+from core.tenancy import OwnedModel
 
-class Project(models.Model):
+
+class Project(OwnedModel):
 
     STATUS_CHOICES = [
         ('ongoing', 'Ongoing'),
@@ -22,7 +24,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
+    class Meta(OwnedModel.Meta):
         ordering = ['-created_at']
 
     def __str__(self):

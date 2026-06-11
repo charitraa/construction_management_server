@@ -2,10 +2,24 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
-from core.permission import LoginRequiredPermission
+from rest_framework_simplejwt.tokens import RefreshToken
+from core.permission import LoginRequiredPermission, SuperUserPermission
 from core.throttling import LoginRateThrottle
 from .serializers import  UserSerializer, UserCreateSerializer, UserUpdateSerializer
 from .services import UserService
+
+
+def set_auth_cookies(response, access, refresh):
+    """Attach the JWT access/refresh tokens as http-only cookies on a response."""
+    for key, value in (("access_token", access), ("refresh_token", refresh)):
+        response.set_cookie(
+            key=key,
+            value=value,
+            httponly=True,
+            secure=True,
+            samesite="None",
+        )
+    return response
 
 class LoginView(TokenObtainPairView):
     """ View for user login that returns JWT tokens and user data. """
@@ -48,9 +62,46 @@ class LoginView(TokenObtainPairView):
 
         return Response({"message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+class RegisterView(APIView):
+    """Public self-service signup.
+
+    Anyone can create an account here. New accounts are plain tenants — never
+    staff/superuser — and are logged straight in (JWT cookies set) so the
+    frontend can drop them onto their own empty workspace.
+    """
+    permission_classes = []
+    authentication_classes = []
+    throttle_classes = [LoginRateThrottle]
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        # Self-signed-up users must not gain admin/staff capabilities.
+        if user.is_staff or user.is_superuser:
+            user.is_staff = False
+            user.is_superuser = False
+            user.save(update_fields=["is_staff", "is_superuser"])
+
+        refresh = RefreshToken.for_user(user)
+        access = str(refresh.access_token)
+
+        response = Response({
+            "message": "Account created successfully",
+            "data": {
+                "user": UserSerializer(user).data,
+                "access": access,
+                "refresh": str(refresh),
+            },
+        }, status=status.HTTP_201_CREATED)
+        return set_auth_cookies(response, access, str(refresh))
+
+
 class UserListView(APIView):
     """ Admin-only view to retrieve all user details. """
-    permission_classes = [LoginRequiredPermission]
+    permission_classes = [SuperUserPermission]
 
     def get(self, request, *args, **kwargs):
         data = UserService.get_all_users()
@@ -66,7 +117,7 @@ class UserProfileView(APIView):
 
 class UserRetrieveView(APIView):
     """ Admin-only view to retrieve user details by ID. """
-    permission_classes = [LoginRequiredPermission]
+    permission_classes = [SuperUserPermission]
 
     def get(self, user_id, *args, **kwargs):
         user = UserService.get_user_by_id(user_id)
@@ -77,7 +128,7 @@ class UserRetrieveView(APIView):
 class UserUpdateView(APIView):
     """Admin-only view to update user details."""
 
-    permission_classes = [LoginRequiredPermission]
+    permission_classes = [SuperUserPermission]
     def put(self, request, user_id, *args, **kwargs):
         user = UserService.get_user_by_id(user_id)
         if not user:
@@ -91,7 +142,7 @@ class UserUpdateView(APIView):
 class UserCreateView(APIView):
     """Admin-only view to create new users."""
 
-    permission_classes = [LoginRequiredPermission]
+    permission_classes = [SuperUserPermission]
     def post(self, request, *args, **kwargs):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -102,7 +153,7 @@ class UserCreateView(APIView):
 class UserDestroyView(APIView):
     """Admin-only view to delete a user."""
 
-    permission_classes = [LoginRequiredPermission]
+    permission_classes = [SuperUserPermission]
     def delete(self, user_id, *args, **kwargs):
         user = UserService.get_user_by_id(user_id)
         if not user:

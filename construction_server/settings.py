@@ -73,6 +73,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'core.middleware.CurrentOwnerMiddleware',
     'core.middleware.AllowOptionsMiddleware',
     'core.middleware.RefreshTokenMiddleware',
     'core.api_logging.APILoggingMiddleware',

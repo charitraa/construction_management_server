@@ -1,8 +1,10 @@
 from django.db import models
 import uuid
 
+from core.tenancy import OwnedModel
 
-class Advance(models.Model):
+
+class Advance(OwnedModel):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     date = models.DateField()
@@ -11,7 +13,7 @@ class Advance(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
+    class Meta(OwnedModel.Meta):
         ordering = ['-date']
 
     def __str__(self):
@@ -23,6 +25,7 @@ class Advance(models.Model):
         super().save(*args, **kwargs)
         if is_new:
             Expense.objects.create(
+                owner=self.owner,
                 date=self.date,
                 category='Advance',
                 description=f"Advance to {self.employee.name} - {self.employee.role}",

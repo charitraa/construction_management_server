@@ -1,8 +1,10 @@
 from django.db import models
 import uuid
 
+from core.tenancy import OwnedModel
 
-class Expense(models.Model):
+
+class Expense(OwnedModel):
 
     CATEGORY_CHOICES = [
         ('Materials', 'Materials'),
@@ -22,7 +24,7 @@ class Expense(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
+    class Meta(OwnedModel.Meta):
         ordering = ['-date']
 
     def __str__(self):

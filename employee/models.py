@@ -1,7 +1,10 @@
 from django.db import models
 import uuid
 
-class Employee(models.Model):
+from core.tenancy import OwnedModel
+
+
+class Employee(OwnedModel):
 
     ROLE_CHOICES = [
         ('Mason', 'Mason'),
@@ -19,7 +22,7 @@ class Employee(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_paid_date = models.DateField(null=True, blank=True, help_text="Last date wages were paid out")
-    class Meta:
+    class Meta(OwnedModel.Meta):
         ordering = ['-created_at']
 
     def __str__(self):
