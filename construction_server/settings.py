@@ -386,7 +386,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": BASE_DIR + "/django_cache",  # folder to store cache files
+        "LOCATION": BASE_DIR / "django_cache",  # folder to store cache files
         "TIMEOUT": 60 * 5,  # default cache timeout (5 minutes)
         "OPTIONS": {
             "MAX_ENTRIES": 1000
